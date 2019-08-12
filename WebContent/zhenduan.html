@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/htmleaf-demo.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/SyntaxHighlighter/3.0.83/styles/shCore.css" type="text/css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/SyntaxHighlighter/3.0.83/styles/shThemeDefault.css" type="text/css">
+	<link rel="stylesheet" href="https://terryz.oschina.io/lib/selectmenu/selectmenu.css" type="text/css">
+	<link rel="stylesheet" href="https://terryz.oschina.io/lib/bdialog/b.dialog.bootstrap3.css" type="text/css">
+    <link rel="stylesheet" href="css/selectpage.css" type="text/css">
+	<link rel="stylesheet" type="text/css" href="css/extra.css"> 
+	<link rel="stylesheet" type="text/css" href="css/condition.css">   
+      <script type="syntaxhighlighter" class="brush:js"></script>
+
+</head>
+<body>
+
+<div class="body">
+<div class="choose">
+		<div class="Date">入院日期：<input id="inDate_1" type="date"/></div>
+		<div class="Date">出院日期：<input id="outDate_1" type="date"/></div>
+		<div class="item">查询条数:</div>
+		<div class="select">
+			<select class="pageSize pageSize_1">
+				<option class="option" value="20">20</option>
+				<option class="option" value="30">30</option>
+				<option class="option" value="40">40</option>
+			</select>
+		</div>
+		
+		<div class="item">查询页数:</div>
+		<input class="pageNum pageNum_1" value=1 type="text" name="" oninput="value=value.replace(/[^\d]/g,'')">
+	
+		</div>
+<div class="container width">
+		<div class="row-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="text" id="selectPage3" class="form-control"  placeholder="请输入查询关键字" >
+                </div>
+            </div>
+        </div>	
+    </div>
+<div class="button">
+        <button type="submit" @click="goToSearch">搜 索</button>
+</div>
+<div class="content">
+		<table id="tableSort">
+		</table>
+</div>
+
+</div>
+
+	 <script src="./jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/SyntaxHighlighter/3.0.83/scripts/shCore.js" ></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/SyntaxHighlighter/3.0.83/scripts/shBrushXml.js" ></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/SyntaxHighlighter/3.0.83/scripts/shBrushCss.js" ></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/SyntaxHighlighter/3.0.83/scripts/shBrushJava.js" ></script>
+	<script type="text/javascript" src="https://cdn.bootcss.com/SyntaxHighlighter/3.0.83/scripts/shBrushJScript.js" ></script>
+	
+	<script type="text/javascript" src="https://terryz.oschina.io/lib/bdialog/b.dialog.js" ></script>
+	<script type="text/javascript" src="https://terryz.oschina.io/lib/selectmenu/selectmenu.min.js" ></script>
+    <script type="text/javascript" src="js/selectpage.js" ></script>
+    <script type="text/javascript">
+	$(function(){
+
+		$('#selectPage3').selectPage({
+			showField : 'name',
+			keyField : 'id',
+			data : "initZhenDuan",
+			lang: 'en',
+			multiple : true,
+			noResultClean : true,
+			 eAjaxSuccess : function(d){
+				 	console.log(d);
+			        var result;
+			        if(d) result = d.values.gridResult;
+			        else result = undefined;
+			        return result;
+			    }
+        });		
+    });
+    
+    
+	$('.button').on('click',function(){
+		var arr="";
+		var search = $('.selected_tag');
+		for(var i = 0; i < search.length; i++){
+			arr += search[i].innerText;
+			console.log(search[i].innerText)
+			arr += ",";
+		}
+	
+        var inDate = $('#inDate_1').val();
+        var outDate = $('#outDate_1').val();
+        var pageNum = $('.pageNum_1').val();
+		var pageSize = $('.pageSize_1').val();
+		console.log("inDate"+inDate);
+		console.log("outDate"+outDate);
+		console.log("pageNum"+pageNum);
+		console.log("pageSize"+pageSize);
+		console.log("input"+arr);           
+            $.ajax({
+            type:"GET",
+            url:"zhenduan",
+            dataType:"json",
+            data:{
+                inDate:inDate,
+                outDate:outDate,
+                pageNum:pageNum,
+				pageSize:pageSize,
+				input:arr
+            },
+            success:function (resp) {
+                if(null != resp && "" != resp){
+                    console.log(resp);
+                    $("#tableSort").empty();
+                    var str = '<thead>'+
+                    '<tr>' +
+                 	'<th> 病案号   </th>'+
+                    '<th> 姓名   </th>'+
+                    '<th>性别 </th>'+
+                    '<th>出生日期 </th>'+
+                    '<th>年龄 </th>'+
+                    '<th>婚姻 </th>'+
+                    '<th>离院方式 </th>'+
+                    '<th>转归情况 </th>'+
+                    '<th>住院次数 </th>'+
+                    '<th>地址省 </th>'+
+                    '<th>地址市 </th>'+
+                    '<th>地址县 </th>'+
+                    '<th>身份证号 </th>'+
+                    '<th>现住址 </th>'+
+                    '<th>联系电话 </th>'+
+                    '<th>入院日期 </th>'+
+                    '<th>RUYUANKS </th>'+
+                    '<th>入院床位 </th>'+
+                    '<th>出院日期 </th>'+
+                    '<th> CHUYUANKS </th>'+
+                    '<th>出院床位 </th>'+
+                    '<th>实际住院天数 </th>'+
+                    '<th>门诊诊断代码 </th>'+
+                    '<th>门诊诊断名称 </th>'+
+                    '<th>出院诊断代码 </th>'+
+                    '<th>出院诊断名称 </th>'+
+                    '<th>其他诊断代码1 </th>'+
+                    '<th>其他诊断名称1 </th>'+
+                    '<th>其他诊断代码2 </th>'+
+                    '<th>其他诊断名称2 </th>'+
+                    '<th>其他诊断代码3 </th>'+
+                    '<th>其他诊断名称3 </th>'+
+                    '<th>其他诊断代码4 </th>'+
+                    '<th>其他诊断名称4 </th>'+
+                    '<th>其他诊断代码5 </th>'+
+                    '<th>其他诊断名称5 </th>'+
+                    '<th>其他诊断代码6 </th>'+
+                    '<th>其他诊断名称6 </th>'+
+                    '<th>其他诊断代码7 </th>'+
+                    '<th>其他诊断名称7 </th>'+
+                    '<th>其他诊断代码8 </th>'+
+                    '<th>其他诊断名称8 </th>'+
+                    '<th>其他诊断代码9 </th>'+
+                    '<th>其他诊断名称9 </th>'+
+                    '<th>其他诊断代码10 </th>'+
+                    '<th>其他诊断名称10 </th>'+
+                    '<th>血型 </th>'+
+                    '<th>RH </th>'+
+                            '</tr>'+
+                            '</thead>';
+            $("#tableSort").append(str);
+            var str_1 = '<tbody>';
+            for(var k = 0 ; k < resp.length; k++){
+            	var i = resp[k];
+                str_1 +='<tr>'+
+                    '<td>' +  i.bingAnNum +  '</td>'+
+					'<td>' +  i.name +  '</td>' +
+					'<td>' +  i.sex +  '</td>' +
+					'<td>' +  i.birDate +  '</td>' +
+					'<td>' +  i.age +  '</td>' +
+					'<td>' +  i.marriage +  '</td>' +
+					'<td>' +  i.leaveWay +  '</td>' +
+					'<td>' +  i.outcome +  '</td>' +
+					'<td>' +  i.hospitalDay +  '</td>' +
+					'<td>' +  i.province +  '</td>' +
+					'<td>' +  i.city +  '</td>' +
+					'<td>' +  i.xian +  '</td>' +
+					'<td>' +  i.iDNo +  '</td>' +
+					'<td>' +  i.address +  '</td>' +
+					'<td>' +  i.phone +  '</td>' +
+					'<td>' +  i.inDate +  '</td>' +
+					'<td>' +  i.rUYUANKS +  '</td>' +
+					'<td>' +  i.inBed +  '</td>' +
+					'<td>' +  i.outDate +  '</td>' +
+					'<td>' +  i.cHUYUANKS  +  '</td>' +
+					'<td>' +  i.outBed +  '</td>' +
+					'<td>' +  i.hospitalDay +  '</td>' +
+					'<td>' +  i.menzhenDiaCode +  '</td>' +
+					'<td>' +  i.menzhenDiaName +  '</td>' +
+					'<td>' +  i.dischargeDiaCode +  '</td>' +
+					'<td>' +  i.dischargeDiaName +  '</td>' +
+					'<td>' +  i.otherCode1  +  '</td>' +
+					'<td>' +  i.otherName1  +  '</td>' +
+					'<td>' +  i.otherCode2  +  '</td>' +
+					'<td>' +  i.otherName2  +  '</td>' +
+					'<td>' +  i.otherCode3  +  '</td>' +
+					'<td>' +  i.otherName3  +  '</td>' +
+					'<td>' +  i.otherCode4  +  '</td>' +
+					'<td>' +  i.otherName4  +  '</td>' +
+					'<td>' +  i.otherCode5  +  '</td>' +
+					'<td>' +  i.otherName5  +  '</td>' +
+					'<td>' +  i.otherCode6  +  '</td>' +
+					'<td>' +  i.otherName6  +  '</td>' +
+					'<td>' +  i.otherCode7  +  '</td>' +
+					'<td>' +  i.otherName7  +  '</td>' +
+					'<td>' +  i.otherCode8  +  '</td>' +
+					'<td>' +  i.otherName8  +  '</td>' +
+					'<td>' +  i.otherCode9  +  '</td>' +
+					'<td>' +  i.otherName9  +  '</td>' +
+					'<td>' +  i.otherCode10  +  '</td>' +
+					'<td>' +  i.otherName10  +  '</td>' +
+					'<td>' +  i.bloodType +  '</td>' +
+					'<td>' +  i.rH +  '</td>' +
+                '</tr>' 
+            }
+            str_1 += '</tbody>';
+                    $("#tableSort").append(str_1);
+
+                 }else{
+                    alert("json为空");
+                 }     
+            }
+            })
+         
+        
+
+    })
+
+    </script>
+</body>
+</html>

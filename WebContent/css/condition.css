@@ -1,0 +1,200 @@
+.input-group {
+    width: 1200px;
+    height: 50px;
+    margin-left:-280px;
+    margin-top: 20px;
+    border: 1px solid #cccccc;
+
+}
+
+.Date{
+    float: left;
+    padding-top: 12px;
+    padding-left: 10px;
+    color: #807c7c;
+    font-size: 12px;
+    height: 43px;
+    padding-right: 10px;
+    border-right: 1px solid #cccccc;
+}
+
+.item{
+    float: left;
+    padding-top: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-right: 1px solid #cccccc;
+    color: #807c7c;
+    font-size: 13px;
+    height: 43px;
+   
+}
+
+.pageSize{
+    border-bottom: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+}
+
+.pageNum{
+    /* color: #807c7c; */
+    height: 44px;
+    width: 40px;
+    background: #FFFFFF;
+    font-size: 14px;
+    float: left;
+    border: 0px solid #ff7496;
+    border-bottom: 1px solid #cccccc;
+    /*border-right: 1px solid #cccccc;*/
+    color: #807c7c;
+    padding-left: 15px;
+    outline: none;
+}
+
+.input {
+    height: 48px;
+    width: 300px;
+    background: #FFFFFF;
+    font-size: 14px;
+    float: left;
+    border: 0px solid #FFF;/* 必须加 可能配合下一句使用 */
+    border-left: 1px solid #c0c0c0;
+    padding-left: 15px;
+    outline: none;
+}
+
+input,
+select,
+a:focus {
+    outline: none;
+}
+
+
+select{
+    height: 44px;
+    width: 80px;
+    border: 0px solid #ff7496;
+    float: left;
+    color: #8f9db3;
+    background-color: #FFF;
+    padding-left: 15px;
+    /* 鼠标触碰光标变手势 */
+    cursor: pointer;
+    /* 清除默认样式 */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+div[class="select"]:after {
+/* 给select添加右侧下拉图标 */
+    content: "";
+    width: 14px;
+    height: 8px;
+    background: url(下拉.png) no-repeat center;
+    position: relative;
+    float: left;
+    margin-left: -30px;
+    top: 22px;
+    pointer-events: none;
+}
+
+
+
+
+
+*{
+    margin: 0;
+    padding: 0;
+}
+.tab-top{
+    width: 600px;
+    height:70px;
+    margin: 20px auto 20px;
+}
+.tab-top li{
+    list-style: none;
+    width: 198px;
+    height:70px;
+    float:left;
+    text-align: center;
+    line-height: 70px;
+    border:1px solid #c0c0c0; 
+    cursor: pointer
+
+}
+.selected{
+    background:rgb(201, 214, 228);
+}
+.tab-wrapper {
+    width: 642px;
+    height: 50px;
+    /* border: 1px solid #ddd; */
+    margin: 0 auto;
+}
+.tab-wrapper .box {
+    display: none;
+}
+
+.content {
+    margin-top: 5px;
+    width: 1200px;
+    height: 500px;
+    margin: 0 auto;
+    margin-top:20px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
+#tableSort{
+
+    white-space: nowrap;
+}
+
+.content table {
+    border: solid 1px #666;
+    border-collapse: collapse;
+    width: 100%;
+    cursor: default; /*该属性定义了鼠标指针放在一个元素边界范围内时所用的光标形状,default默认光标（通常是一个箭头）*/
+
+}
+tr{
+    border: solid 1px rgb(201, 214, 228);
+    height: 30px;
+}
+table thead tr{
+    background-color: #ccc;
+}
+td{
+    border: solid 1px #c0c0c0;
+}
+th{
+    border: solid 1px #c0c0c0;
+    text-align: center;
+    cursor: pointer; /*光标呈现为指示链接的指针（一只手）*/
+    width: 20px;
+}
+.sequence{
+    text-align: center;
+}
+.hover{
+    background-color: rgb(201, 214, 228);
+}
+
+.choose{
+    margin: 10px 315px;
+    border: solid 1px #c0c0c0;
+    height:45px;
+    width:705px;
+
+}
+
+.totoalNum{
+    width:40px;
+    height:40px;
+    float: left;
+    padding:12px 15px;
+    background: #FFFFFF;
+    font-size: 14px;
+    color: #807c7c;
+
+}

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+    </head>
+
+	<body>
+	<div class="tab">
+        
+    </div>
+    <div class="tab-top">
+        <li>病案首页</li>
+        <li>血常规</li>
+        <li>医嘱</li>
+    </div>
+    <div class="tab-wrapper">
+            <div class="input-group box">
+                    <div class="Date">入院日期：<input id="inDate_1" type="date"/></div>
+                    <div class="Date">出院日期：<input id="outDate_1" type="date"/></div>
+                    <div class="item">查询条数:</div>
+                    <div class="select">
+                        <select class="pageSize pageSize_1">
+                            <option class="option" value="20">20</option>
+                            <option class="option" value="30">30</option>
+                            <option class="option" value="40">40</option>
+                        </select>
+                    </div>
+                    <div class="item">查询页数:</div>
+                    <input class="pageNum pageNum_1" value=1 type="text" name="" oninput="value=value.replace(/[^\d]/g,'')">
+                    <div class="select">
+                        <select class="select_1">
+                            <option class="option" value="zhuYuan">住院号</option>
+                            <option class="option" value="bingAn">病案号</option>
+                            <option class="option" value="name">姓名</option>
+                            <option class="option" value="zhenDuan">诊断名称</option>
+                        </select>
+                    </div>
+                    <input type="text" class="input input_1" class=" " placeholder="请输入条件进行查询" onfocus="this.placeholder=' ' " onblur=" this.placeholder='请输入条件进行查询' "v-model="searchValue">
+                    <!-- placeholder的点击消失及为空时点击其他继续显示提示  -->
+                    <span class="Search">
+                        <button class="button_1" class=" " type="submit" @click="goToSearch">搜 索</button>
+                    </span>
+            </div>
+            
+            <div class="input-group box">
+                    <div class="Date">入院日期：<input id="inDate_2" type="date"/></div>
+                    <div class="Date">出院日期：<input id="outDate_2" type="date"/></div>
+                    <div class="item">查询条数:</div>
+                    <div class="select">
+                        <select class="pageSize pageSize_2">
+                            <option class="option" value="20">20</option>
+                            <option class="option" value="30">30</option>
+                            <option class="option" value="40">40</option>
+                        </select>
+                    </div>
+                    <div class="item">查询页数:</div>
+                    <input class="pageNum pageNum_2" value=1 type="text" name="" oninput="value=value.replace(/[^\d]/g,'')">
+                <div class="select">
+                    <select class="select_2">
+                        <option class="option" value="zhuYuan">住院号</option>
+                        <!-- <option class="option" value="bingAn">病案号</option> -->
+                        <option class="option" value="name">姓名</option>
+                    </select>
+                </div>
+                <input type="text" class="input input_2" class=" " placeholder="请输入条件进行查询" onfocus="this.placeholder=' ' " onblur=" this.placeholder='请输入条件进行查询' "v-model="searchValue">
+                <!-- placeholder的点击消失及为空时点击其他继续显示提示  -->
+                <span class="Search">
+                    <button class="button_2" class=" " type="submit" @click="goToSearch">搜 索</button>
+                </span>
+            </div>
+            
+            <div class="input-group box">
+                    <div class="Date">入院日期：<input id="inDate_3" type="date"/></div>
+                    <div class="Date">出院日期：<input id="outDate_3" type="date"/></div>
+                    <div class="item">查询条数:</div>
+                    <div class="select">
+                        <select class="pageSize pageSize_3">
+                            <option class="option" value="20">20</option>
+                            <option class="option" value="30">30</option>
+                            <option class="option" value="40">40</option>
+                        </select>
+                    </div>
+                    <div class="item">查询页数:</div>
+                    <input class="pageNum pageNum_3" value=1 type="text" name="" oninput="value=value.replace(/[^\d]/g,'')">
+                <div class="select">
+                    <select class="select_3">
+                        <option class="option" value="zhuYuan">住院号</option>
+                        <!-- <option class="option" value="bingAn">病案号</option> -->
+                        <option class="option" value="name">姓名</option>
+                        <option class="option" value="yizhu">医嘱名称</option>
+                    </select>
+                </div>
+                <input type="text" class="input input_3" class=" " placeholder="请输入条件进行查询" onfocus="this.placeholder=' ' " onblur=" this.placeholder='请输入条件进行查询' "v-model="searchValue">
+                <!-- placeholder的点击消失及为空时点击其他继续显示提示  -->
+                <span class="Search">
+                    <button class="button_3" class=" " type="submit" @click="goToSearch">搜 索</button>
+                </span>
+            </div>
+        <!-- <div class="box" style = "display:block">综艺</div>
+        <div class="box">电影</div>
+        <div class="box">动漫</div>  -->
+    </div>
+    
+
+    <div class="content">
+            <table id="tableSort">
+            </table>
+    </div>
+
+
+    </body>
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./js/jquery-1.10.2.js"></script>
+     <script src = './js/tab.js'></script>
+    <script>
+        tab({
+            aLiList:document.querySelectorAll('.tab-top>li'),
+            aDivList:document.querySelectorAll('.tab-wrapper .box'),
+            evType : 'onclick',
+            curIndex:0,
+            callback: function callback(){
+                console.log()
+            }
+        });
+
+        $('.button_1').on('click',function(){
+            var way = $('.select_1').val();
+            var input = $('.input_1').val();
+            var inDate = $('#inDate_1').val();
+            var outDate = $('#outDate_1').val();
+            var pageNum = $('.pageNum_1').val();
+            var pageSize = $('.pageSize_1').val();
+            console.log(way);
+            console.log(input);
+            if(( ( way == "zhuYuan" || way == "bingAn") && input.length != 8)||(input.length == 0)){
+                alert("输入不符合要求");
+            }else{
+                $.ajax({
+                type:"GET",
+                url:"queryAll",
+                dataType:"json",
+                data:{
+                    select:$('.select_1').val(),
+                    input:$('.input_1').val(),
+                    type:"bingAn",
+                    inDate:inDate,
+                    outDate:outDate,
+                    pageNum:pageNum,
+                    pageSize:pageSize
+                },
+                success:function (resp) {
+                    if(null != resp && "" != resp){
+                        console.log(resp);
+                        $("#tableSort").empty();
+                        var str = '<thead>'+
+                        '<tr>' +
+                     	'<th> 病案号   </th>'+
+                        '<th> 姓名   </th>'+
+                        '<th>性别 </th>'+
+                        '<th>出生日期 </th>'+
+                        '<th>年龄 </th>'+
+                        '<th>婚姻 </th>'+
+                        '<th>离院方式 </th>'+
+                        '<th>转归情况 </th>'+
+                        '<th>住院次数 </th>'+
+                        '<th>地址省 </th>'+
+                        '<th>地址市 </th>'+
+                        '<th>地址县 </th>'+
+                        '<th>身份证号 </th>'+
+                        '<th>现住址 </th>'+
+                        '<th>联系电话 </th>'+
+                        '<th>入院日期 </th>'+
+                        '<th>RUYUANKS </th>'+
+                        '<th>入院床位 </th>'+
+                        '<th>出院日期 </th>'+
+                        '<th> CHUYUANKS </th>'+
+                        '<th>出院床位 </th>'+
+                        '<th>实际住院天数 </th>'+
+                        '<th>门诊诊断代码 </th>'+
+                        '<th>门诊诊断名称 </th>'+
+                        '<th>出院诊断代码 </th>'+
+                        '<th>出院诊断名称 </th>'+
+                        '<th>其他诊断代码1 </th>'+
+                        '<th>其他诊断名称1 </th>'+
+                        '<th>其他诊断代码2 </th>'+
+                        '<th>其他诊断名称2 </th>'+
+                        '<th>其他诊断代码3 </th>'+
+                        '<th>其他诊断名称3 </th>'+
+                        '<th>其他诊断代码4 </th>'+
+                        '<th>其他诊断名称4 </th>'+
+                        '<th>其他诊断代码5 </th>'+
+                        '<th>其他诊断名称5 </th>'+
+                        '<th>其他诊断代码6 </th>'+
+                        '<th>其他诊断名称6 </th>'+
+                        '<th>其他诊断代码7 </th>'+
+                        '<th>其他诊断名称7 </th>'+
+                        '<th>其他诊断代码8 </th>'+
+                        '<th>其他诊断名称8 </th>'+
+                        '<th>其他诊断代码9 </th>'+
+                        '<th>其他诊断名称9 </th>'+
+                        '<th>其他诊断代码10 </th>'+
+                        '<th>其他诊断名称10 </th>'+
+                        '<th>血型 </th>'+
+                        '<th>RH </th>'+
+                                '</tr>'+
+                                '</thead>';
+                $("#tableSort").append(str);
+                var str_1 = '<tbody>';
+                for(var k = 0 ; k < resp.length; k++){
+                	var i = resp[k];
+                    str_1 +='<tr>'+
+                        '<td>' +  i.bingAnNum +  '</td>'+
+						'<td>' +  i.name +  '</td>' +
+						'<td>' +  i.sex +  '</td>' +
+						'<td>' +  i.birDate +  '</td>' +
+						'<td>' +  i.age +  '</td>' +
+						'<td>' +  i.marriage +  '</td>' +
+						'<td>' +  i.leaveWay +  '</td>' +
+						'<td>' +  i.outcome +  '</td>' +
+						'<td>' +  i.hospitalDay +  '</td>' +
+						'<td>' +  i.province +  '</td>' +
+						'<td>' +  i.city +  '</td>' +
+						'<td>' +  i.xian +  '</td>' +
+						'<td>' +  i.iDNo +  '</td>' +
+						'<td>' +  i.address +  '</td>' +
+						'<td>' +  i.phone +  '</td>' +
+						'<td>' +  i.inDate +  '</td>' +
+						'<td>' +  i.rUYUANKS +  '</td>' +
+						'<td>' +  i.inBed +  '</td>' +
+						'<td>' +  i.outDate +  '</td>' +
+						'<td>' +  i.cHUYUANKS  +  '</td>' +
+						'<td>' +  i.outBed +  '</td>' +
+						'<td>' +  i.hospitalDay +  '</td>' +
+						'<td>' +  i.menzhenDiaCode +  '</td>' +
+						'<td>' +  i.menzhenDiaName +  '</td>' +
+						'<td>' +  i.dischargeDiaCode +  '</td>' +
+						'<td>' +  i.dischargeDiaName +  '</td>' +
+						'<td>' +  i.otherCode1  +  '</td>' +
+						'<td>' +  i.otherName1  +  '</td>' +
+						'<td>' +  i.otherCode2  +  '</td>' +
+						'<td>' +  i.otherName2  +  '</td>' +
+						'<td>' +  i.otherCode3  +  '</td>' +
+						'<td>' +  i.otherName3  +  '</td>' +
+						'<td>' +  i.otherCode4  +  '</td>' +
+						'<td>' +  i.otherName4  +  '</td>' +
+						'<td>' +  i.otherCode5  +  '</td>' +
+						'<td>' +  i.otherName5  +  '</td>' +
+						'<td>' +  i.otherCode6  +  '</td>' +
+						'<td>' +  i.otherName6  +  '</td>' +
+						'<td>' +  i.otherCode7  +  '</td>' +
+						'<td>' +  i.otherName7  +  '</td>' +
+						'<td>' +  i.otherCode8  +  '</td>' +
+						'<td>' +  i.otherName8  +  '</td>' +
+						'<td>' +  i.otherCode9  +  '</td>' +
+						'<td>' +  i.otherName9  +  '</td>' +
+						'<td>' +  i.otherCode10  +  '</td>' +
+						'<td>' +  i.otherName10  +  '</td>' +
+						'<td>' +  i.bloodType +  '</td>' +
+						'<td>' +  i.rH +  '</td>' +
+                    '</tr>' 
+                }
+                str_1 += '</tbody>';
+                        $("#tableSort").append(str_1);
+
+                     }else{
+                        alert("json为空");
+                     }     
+                }
+                })
+             }
+            
+
+        })
+
+       $('.button_2').on('click',function(){
+            // console.log($('.input_2').val());
+            // console.log($('.select_2').val());
+            var way = $('.select_2').val();
+            var input = $('.input_2').val();
+            var inDate = $('#inDate_2').val();
+            var outDate = $('#outDate_2').val();
+            var pageNum = $('.pageNum_2').val();
+            var pageSize = $('.pageSize_2').val();
+            // console.log(inDate);
+            // console.log(outDate);
+            // console.log(pageNum);
+            // console.log(pageSize);
+            // console.log(way);
+            // console.log(input);
+            if(( ( way == "zhuYuan" || way == "bingAn") && input.length != 8)||(input.length == 0)){
+                alert("输入不符合要求");
+            }else{
+            $.ajax({
+            type:"GET",
+            url:"queryAll",
+            dataType:"json",
+            data:{
+                select:$('.select_2').val(),
+                input:$('.input_2').val(),
+                type:"xcg",
+                inDate:inDate,
+                outDate:outDate,
+                pageNum:pageNum,
+                pageSize:pageSize
+            },
+            success:function (resp) {
+                if(null != resp && "" != resp){
+                        console.log(resp);
+                        $("#tableSort").empty();
+                        var str = '<thead>'+ 
+                                    '<tr>' +
+                                    '<th>住院号</th>'+       
+                                    '<th>姓名</th>'+
+                                    '<th>性别</th>'+
+                                    '<th>申请时间</th>'+
+                                    '<th>病案号</th>'+
+                                    '<th>入院日期</th>'+
+                                    '<th>出院日期</th>'+
+                                    '<th>开单项目</th>'+
+                                    '<th>检查时间</th>'+
+                                    '<th>年龄</th>'+
+                                    '<th>检验项目</th>'+
+                                    '<th>结果</th>'+
+                                    '<th>参考值</th>'+
+                                    '</tr>'+
+                                '</thead>';
+		                $("#tableSort").append(str);
+		                var str_1 = '<tbody>';
+		                for(var k = 0 ; k < resp.length; k++){
+		                	var i = resp[k];
+		                    str_1 +='<tr>'+    
+		                        '<td>' +  i.zhuYuanNum +  '</td>' +
+								'<td>' +  i.nameString +  '</td>' +
+								'<td>' +  i.sex +  '</td>' +
+								'<td>' +  i.applyTime +  '</td>' +
+								'<td>' +  i.bingAnNum +  '</td>'+
+								'<td>' +  i.inDate +  '</td>'+
+								'<td>' +  i.outDate +  '</td>'+
+								'<td>' +  i.kaiDanItem +  '</td>'+
+								'<td>' +  i.checkTime +  '</td>'+
+								'<td>' +  i.age +  '</td>'+
+								'<td>' +  i.checkItems +  '</td>'+
+								'<td>' +  i.result +  '</td>'+
+								'<td>' +  i.reference +  '</td>'+
+		                    '</tr>' 
+		                }
+                		str_1 += '</tbody>';
+                        $("#tableSort").append(str_1);
+                }else{
+                        alert("json为空");
+                }     
+        }
+        })
+
+            }
+           
+
+        })
+
+        $('.button_3').on('click',function(){
+            // console.log($('.input_3').val());
+            // console.log($('.select_3').val());
+            var way = $('.select_3').val();
+            var input = $('.input_3').val();
+            var inDate = $('#inDate_3').val();
+            var outDate = $('#outDate_3').val();
+            var pageNum = $('.pageNum_3').val();
+            var pageSize = $('.pageSize_3').val();
+            // console.log(inDate);
+            // console.log(outDate);
+            // console.log(pageNum);
+            // console.log(pageSize);
+            // console.log(way);
+            // console.log(input);
+            if(( ( way == "zhuYuan" || way == "bingAn") && input.length != 8)||(input.length == 0)){
+                alert("输入不符合要求");
+            }else{
+            $.ajax({
+            type:"GET",
+            url:"queryAll",
+            dataType:"json",
+            data:{
+                select:$('.select_3').val(),
+                input:$('.input_3').val(),
+                type:"yizhu",
+                inDate:inDate,
+                outDate:outDate,
+                pageNum:pageNum,
+                pageSize:pageSize
+            },
+            success:function (resp) {
+                if(null != resp && "" != resp){
+                console.log(resp);
+                $("#tableSort").empty();
+                        var str = '<thead>'+ 
+                                        '<tr>' +   
+                                        '<th>姓名</th>'+
+                                        '<th>性别</th>'+
+                                        '<th>年龄</th>'+
+                                        '<th>住院号</th>'+ 
+                                        '<th>入院日期</th>'+
+                                        '<th>出院日期</th>'+
+                                        '<th>出院科室</th>'+
+                                        '<th>医嘱名称</th>'+
+                                        '<th>开始时间</th>'+
+                                        '<th>结束时间</th>'+
+                                        '<th>频次</th>'+
+                                        '<th>开单医生</th>'+
+                                        '<th>规格</th>'+
+                                        '<th>剂量单位</th>'+
+                                        '<th>一次用量</th>'+  
+                                        '</tr>'+
+                                    '</thead>';
+		                $("#tableSort").append(str);
+		                var str_1 = '<tbody>';
+		                for(var k = 0 ; k < resp.length; k++){
+		                	var i = resp[k];
+		                    str_1 +='<tr>' +   
+                                        '<td>' +  i.name +  '</td>' +
+                                        '<td>' +  i.sex +  '</td>' +
+                                        '<td>' +  i.age +  '</td>' +
+                                        '<td>' +  i.zhuYuanNum +  '</td>' + 
+                                        '<td>' +  i.inDate +  '</td>' +
+                                        '<td>' +  i.outDate +  '</td>' +
+                                        '<td>' +  i.outKeShi +  '</td>' +
+                                        '<td>' +  i.yizhuName +  '</td>' +
+                                        '<td>' +  i.startTime +  '</td>' +
+                                        '<td>' +  i.endTime +  '</td>' +
+                                        '<td>' +  i.frequency +  '</td>' +
+                                        '<td>' +  i.docName +  '</td>' +
+                                        '<td>' +  i.specification +  '</td>' +
+                                        '<td>' +  i.measureUnit +  '</td>' +
+                                        '<td>' +  i.useLevel +  '</td>' +  
+                                        '</tr>'
+		                }
+                		str_1 += '</tbody>';
+                        $("#tableSort").append(str_1);
+                }else{
+                alert("json为空");
+                }     
+           }
+            })
+            }
+
+        })
+
+ 		$('#tableSort > tbody').on('click','tr',function(){
+	  	$(this).addClass('hover').siblings().removeClass('hover');
+	});
+    
+       
+    </script>
+</html>
